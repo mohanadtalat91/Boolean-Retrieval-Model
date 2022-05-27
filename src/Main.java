@@ -107,7 +107,7 @@ public class Main {
 ////////////////////////////////////////////////////////////////////////
 //        **  AND Query Processing Inverted Indexes  ** 
 		
-		invert.AND("cairo", "software");  // Here is an example
+		invert.AND("cairo", "university");  // Here is an example
 //		First Posting list :- 
 //		Doc freq. : 5
 //		Doc Id : 100, 101, 103, 104, 108
@@ -157,8 +157,42 @@ public class Main {
 //		Doc freq. : 2
 //		Doc Id : 103, 104
 //////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////
+//			**  NOT Query Processing Inverted Indexes   **
+		invert.NOT("cairo", "university"); // Here is an example 
+//		First Posting list :- 
+//		Doc freq. : 6
+//		Doc Id : 100, 101, 103, 104, 107, 108
+//
+//		Second Posting list :- 
+//		Doc freq. : 8
+//		Doc Id : 100, 101, 103, 104, 105, 106, 107, 108
+//
+//		(First AND (NOT Second)) Posting list: 
+//		Doc freq. : 0
+//		Doc Id : There are no Doc Id
+//////////////////////////////////////////////////////////////////
 		
+
+//////////////////////////////////////////////////////////////////
+//  	    ** Jecard similarity  **
+		System.out.println() ;  
+		System.out.print("Jecard similarity of file with given input is : ");
+		System.out.println(invert.JecardSimilarity("Faculty of Computers and Artificial Intelligence", 0)); 
 		
+		//  Jecard similarity of file with given input is : 0.01
+//////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////
+//			** Jecard dissimilarity  **
+			System.out.println() ;  
+			System.out.print("Jecard dissimilarity of file with given input is : ");
+			System.out.println(invert.JecardDisSimilarity("Faculty of Computers and Artificial Intelligence", 0)); 
+
+			//  Jecard dissimilarity of file with given input is : 0.99
+//////////////////////////////////////////////////////////////////
+
 		
 //		
 //		try {

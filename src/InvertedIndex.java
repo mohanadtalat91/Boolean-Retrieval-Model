@@ -1,7 +1,12 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Scanner;
+
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 
 public class InvertedIndex {
@@ -62,10 +67,16 @@ public class InvertedIndex {
 	
 	public void DisplayPostingList(ArrayList<Integer> PL) {  //  PL --> stands for Posting list 
 		int numOfFreqPS = PL.size() ; 
-		System.out.println("Doc freq. : " + numOfFreqPS) ; 
-		System.out.print("Doc Id : " + PL.get(0));
-		for(int i=1; i<PL.size(); i++) {
-			System.out.print(", " + PL.get(i));
+		System.out.println("Doc freq. : " + numOfFreqPS) ;
+		System.out.print("Doc Id : ");
+		if(numOfFreqPS == 0) {
+			System.out.print("There are no Doc Id");
+		}
+		for(int i=0; i<numOfFreqPS; i++) {
+			System.out.print(PL.get(i));
+			if(i < numOfFreqPS-1 ) {
+				System.out.print(", ");
+			}
 		}
 		System.out.println(); 
 	}
@@ -163,8 +174,70 @@ public class InvertedIndex {
 		DisplayPostingList(resultOfNOT);
 	}
 	
+	public HashMap<String,Integer> getWordsOfFileMap(int DocId) {
+		HashMap<String,Integer> wordOfFile = new HashMap<String,Integer>() ;
+		DocId += 100 ; 
+		@SuppressWarnings("removal")
+		Integer converted = new Integer(DocId) ;  
+		String fileName = ".\\Docs\\" + converted.toString() +".txt" ;
+		File myFile = new File(fileName) ; 
+		Scanner myScanner = null;
+		try {
+			myScanner = new Scanner(myFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} 
+		while(myScanner.hasNext()) {
+			String dataString = myScanner.next() ;
+			wordOfFile.put(dataString, DocId) ; 
+		}
+		myScanner.close();
+		
+		return wordOfFile ; 
+	}
+	
+	public double JecardSimilarity(String input, int DocId) {
+		ArrayList<String>wordsOfInput = new ArrayList<String>() ; 
+		HashMap<String,Integer> wordOfFile = getWordsOfFileMap(DocId) ;
+		
+		String oneWord = "" ; 
+		for(int i=0; i<input.length(); i++) { 
+			if(input.charAt(i) == ' ') {
+				wordsOfInput.add(oneWord) ; 
+				oneWord = "" ; 
+			}
+			else {
+				oneWord += input.charAt(i) ; 
+			}
+		}
+		if(oneWord != "") {
+			wordsOfInput.add(oneWord) ; 
+		}
+		int found = 0 ; 
+		for(String word : wordsOfInput) {
+			if(wordOfFile.containsKey(word)) {
+				//System.out.println("found") ; 
+				found++ ; 
+			}
+		}
+		
+//		for(String wString : wordsOfInput) {
+//			System.out.print(wString + " ");
+//		}
+//		System.out.println("new line");
+//		for(String wString : wordOfFile.keySet()) {
+//			System.out.print(wString + "it's " + wordOfFile.get(wString));
+//		}
+		double ans = wordOfFile.size()+wordsOfInput.size()-found ;
+		ans = found/ans ; 
+		
+		return ans ;
+	}
 	
 	
 	
-
+	public double JecardDisSimilarity(String input, int DocId) {
+		return 1 - JecardSimilarity(input, DocId) ; 
+	}
+	
 }
