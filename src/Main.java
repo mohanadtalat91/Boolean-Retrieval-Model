@@ -188,13 +188,42 @@ public class Main {
 //			** Jecard dissimilarity  **
 			System.out.println() ;  
 			System.out.print("Jecard dissimilarity of file with given input is : ");
-			System.out.println(invert.JecardDisSimilarity("Faculty of Computers and Artificial Intelligence", 0)); 
+			System.out.println(invert.JecardDisSimilarity("Faculty of Computers and Artificial Intelligence", 0) + "\n"); 
 
 			//  Jecard dissimilarity of file with given input is : 0.99
-//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+			
+			
+//////////////////////////////////////////////////////////////////////////////
+			
+// 			** Cosine similarity **
+			System.out.println("\n    **  Cosine Similarity  **") ; 
+			ArrayList<Integer> docsArrayList = new ArrayList<Integer>() ;
+			for(int i=100; i<104; i++) { // You could add whatever do you want from 100 to 139 by changing i and it's bounding.   
+				docsArrayList.add(i) ; 
+			}
+			invert.CosineSimilarity(docsArrayList);
 
-		
-//		
+//
+//		    **  Cosine Similarity  **
+//		The cosine similarity of Doc #100 and Doc #101 is 0.22155271
+//		The angle (arccosine) similarity of Doc #100 and Doc #101 is 1.3473898
+//		The cosine similarity of Doc #100 and Doc #102 is 0.16509247
+//		The angle (arccosine) similarity of Doc #100 and Doc #102 is 1.4049445
+//		The cosine similarity of Doc #100 and Doc #103 is 0.19555002
+//		The angle (arccosine) similarity of Doc #100 and Doc #103 is 1.373978
+//		The cosine similarity of Doc #101 and Doc #102 is 0.20670731
+//		The angle (arccosine) similarity of Doc #101 and Doc #102 is 1.3625879
+//		The cosine similarity of Doc #101 and Doc #103 is 0.16754614
+//		The angle (arccosine) similarity of Doc #101 and Doc #103 is 1.4024563
+//		The cosine similarity of Doc #102 and Doc #103 is 0.19863108
+//		The angle (arccosine) similarity of Doc #102 and Doc #103 is 1.3708353
+//
+////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			
+			
+			
 //		try {
 //			
 ////			System.out.println(new String(readFromFile(fileName,9,4)));

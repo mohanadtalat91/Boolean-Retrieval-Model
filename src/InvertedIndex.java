@@ -5,9 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
-
+import java.lang.Math; 
 
 public class InvertedIndex {
 	
@@ -174,7 +172,7 @@ public class InvertedIndex {
 		DisplayPostingList(resultOfNOT);
 	}
 	
-	public HashMap<String,Integer> getWordsOfFileMap(int DocId) {
+	private HashMap<String,Integer> getWordsOfFileMap(int DocId) {
 		HashMap<String,Integer> wordOfFile = new HashMap<String,Integer>() ;
 		DocId += 100 ; 
 		@SuppressWarnings("removal")
@@ -240,4 +238,83 @@ public class InvertedIndex {
 		return 1 - JecardSimilarity(input, DocId) ; 
 	}
 	
+	private HashSet<String> getWordsOfFileSet(int DocId) {
+		HashSet<String> wordOfFile = new HashSet<String>() ; 
+		//DocId += 100 ; 
+		@SuppressWarnings("removal")
+		Integer converted = new Integer(DocId) ;  
+		String fileName = ".\\Docs\\" + converted.toString() +".txt" ;
+		File myFile = new File(fileName) ; 
+		Scanner myScanner = null;
+		try {
+			myScanner = new Scanner(myFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} 
+		while(myScanner.hasNext()) {
+			String dataString = myScanner.next() ;
+			wordOfFile.add(dataString) ; 
+		}
+		myScanner.close();
+		
+		return wordOfFile ; 
+	}
+	
+	private float CosineSimilarityOfTwoFiles(int DocId1, int DocId2) {
+		HashSet<String> wordOfDoc1 = getWordsOfFileSet(DocId1) ;
+		HashSet<String> wordOfDoc2 = getWordsOfFileSet(DocId2) ;
+		HashSet<String> wordOfBothDocs = new HashSet<String>() ; 
+		ArrayList<Integer> listDoc1 = new ArrayList<>() ; 
+		ArrayList<Integer> listDoc2 = new ArrayList<>() ; 
+		float Doc1DotDoc2 = 0, magnitudeOfDoc1 = 0, magnitudeOfDoc2 = 0 ;
+		
+		for(String item : wordOfDoc1) {
+			wordOfBothDocs.add(item) ; 
+		}
+		for(String item : wordOfDoc2) {
+			wordOfBothDocs.add(item) ; 
+		}
+		for(String item : wordOfBothDocs) {
+			if(wordOfDoc1.contains(item)) {
+				listDoc1.add(1) ; 
+			}
+			else {
+				listDoc1.add(0) ; 
+			}
+			if(wordOfDoc2.contains(item)) {
+				listDoc2.add(1) ; 
+			}
+			else {
+				listDoc2.add(0) ; 
+			}
+		}
+		for(int i=0; i<listDoc1.size(); i++) {
+			Doc1DotDoc2 += (listDoc1.get(i)*listDoc2.get(i)) ; 
+			magnitudeOfDoc1 += (listDoc1.get(i)*listDoc1.get(i)) ;
+			magnitudeOfDoc2 += (listDoc2.get(i)*listDoc2.get(i)) ; 
+		}
+		magnitudeOfDoc1 = (float)Math.sqrt(magnitudeOfDoc1) ;
+		magnitudeOfDoc2 = (float)Math.sqrt(magnitudeOfDoc2) ; 
+		
+		float CosineSimilarity = (float)Doc1DotDoc2/(magnitudeOfDoc1*magnitudeOfDoc2) ;
+		
+		return CosineSimilarity ; 
+	}
+	
+	private float arcCosineSimilarity(float cosineSimilarity) {
+		float arcCosine = (float)Math.acos(cosineSimilarity) ; 
+		return arcCosine ; 
+	}
+	
+	public void CosineSimilarity(ArrayList<Integer> Docs) {
+		int SizeOfDocs = Docs.size(); 
+		for(int i=0; i<SizeOfDocs; i++) {
+			for(int j=i+1; j<SizeOfDocs; j++) {
+				float cosine_similarity = CosineSimilarityOfTwoFiles(Docs.get(i), Docs.get(j)) ;
+				float arcCosine = arcCosineSimilarity(cosine_similarity) ; 
+				System.out.println("The cosine similarity of Doc #" + Docs.get(i) + " and Doc #" + Docs.get(j) + " is " + cosine_similarity) ;
+				System.out.println("The angle (arccosine) similarity of Doc #" + Docs.get(i) + " and Doc #" + Docs.get(j) + " is " + arcCosine) ;
+			}
+		}
+	}
 }
