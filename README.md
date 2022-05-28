@@ -1,5 +1,5 @@
 # Information Retrieval Models
-Implement Boolean Retrieval Model for Query Processing Inverted Indexes of 40 text file in Docs with 3-Boolean Algebra operations :
+Implement Information Retrieval Models for Query Processing Inverted Indexes of 40 text file in Docs with different Algebra operations :
    
  - [x] AND  
  - [x] OR  
