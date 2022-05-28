@@ -6,3 +6,5 @@ Implement Boolean Retrieval Model for Query Processing Inverted Indexes of 40 te
  - [x] NOT
  - [x] Jeccard Similarity 
  - [x] Jeccard Dissmilarity
+ - [x] Cosine Similarity 
+ 
